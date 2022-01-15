@@ -22,7 +22,6 @@ async function main() {
   console.log("Greeter deployed to:", greeter.address);
 
   // Write a script to generate the signatures using ABI + keccack256
-  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
