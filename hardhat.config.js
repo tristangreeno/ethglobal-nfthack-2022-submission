@@ -24,6 +24,9 @@ module.exports = {
     ropsten: {
       url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
       accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+    },
+    mumbai: {
+      url: 'https://eth-ropsten.alchemyapi.io/v2/Vte68BURUS_kSxvL04eTfWq1SioHj0K6'
     }
   },
 };

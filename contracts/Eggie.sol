@@ -45,4 +45,18 @@ contract Eggie is ERC721, Ownable, AccessControl {
         return super.supportsInterface(interfaceId);
     }
 
+    function isApprovedForAll(address owner, address operator)
+        override
+        public
+        view
+        returns (bool)
+    {
+        // Whitelist OpenSea proxy contract for easy trading.
+        ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
+        if (address(proxyRegistry.proxies(owner)) == operator) {
+            return true;
+        }
+
+        return super.isApprovedForAll(owner, operator);
+    }
 }
