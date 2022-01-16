@@ -5,7 +5,15 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 const tokens = require('../tokens.json');
+const { MerkleTree } = require('merkletreejs');
+const keccak256 = require('keccak256');
 
+function hashToken(tokenId, account) {
+  return Buffer.from(
+    ethers.utils.solidityKeccak256(['uint256', 'address'], [tokenId, account]).slice(2),
+    'hex',
+  );
+}
 
 async function main() {
   const Eggie = await hre.ethers.getContractFactory("Eggie");

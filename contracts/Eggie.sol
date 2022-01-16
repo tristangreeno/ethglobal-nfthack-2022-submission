@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+
 
 contract Eggie is ERC721, Ownable, AccessControl {
     using Counters for Counters.Counter;
@@ -26,11 +28,11 @@ contract Eggie is ERC721, Ownable, AccessControl {
     }
 
     // merkle tree
-    function redeemMerkle(address account, uint256 tokenId, bytes32[] calldata proof)
+    function redeemMerkle(uint256 tokenId, bytes32[] calldata proof)
     external
     {
-        require(_verify(_leaf(account, tokenId), proof), "Invalid merkle proof");
-        _safeMint(account, tokenId);
+        require(_verifyMerkle(_leaf(msg.sender, tokenId), proof), "Invalid merkle proof");
+        _safeMint(msg.sender, tokenId);
     }
 
     function _leaf(address account, uint256 tokenId)
