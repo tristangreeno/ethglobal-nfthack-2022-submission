@@ -1,6 +1,8 @@
 require("@nomiclabs/hardhat-waffle");
-const ALCHEMY_API_KEY = "Vte68BURUS_kSxvL04eTfWq1SioHj0K6";
-const ROPSTEN_PRIVATE_KEY = "262f37508850058ebdf0e52e3ea8f29e387768320a7ac6eeddcf06f953fabb49";
+const dotenv = require('dotenv');
+dotenv.config();
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
+const ALCHEMY_PRIVATE_KEY = process.env.ALCHEMY_PRIVATE_KEY;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -23,11 +25,15 @@ module.exports = {
   networks: {
     ropsten: {
       url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
-      accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+      accounts: [`${ALCHEMY_PRIVATE_KEY}`]
     },
     mumbai: {
-      url: 'https://eth-ropsten.alchemyapi.io/v2/Vte68BURUS_kSxvL04eTfWq1SioHj0K6',
-      accounts: [`262f37508850058ebdf0e52e3ea8f29e387768320a7ac6eeddcf06f953fabb49`],
+      url: `https://polygon-mumbai.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      accounts: [`${ALCHEMY_PRIVATE_KEY}`]
+    },
+    polygon: {
+      url: `https://polygon-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      accounts: [`${ALCHEMY_PRIVATE_KEY}`]
     }
   },
 };
