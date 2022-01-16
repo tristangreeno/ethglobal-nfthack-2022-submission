@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+
 
 import "./meta-transactions/ContentMixin.sol";
 import "./meta-transactions/NativeMetaTransaction.sol";
@@ -39,11 +41,33 @@ contract Eggie is
     address private constant polygonProxyRegistryAddress =
         0x58807baD0B376efc12F5AD86aAc70E78ed67deaE;
 
-    constructor() ERC721(_name, _symbol) {
+
+    constructor(bytes32 merkleroot) ERC721("EGG", "Eggplants") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _tokenIdCounter.increment();
         _initializeEIP712(_name);
+        root = merkleroot;
+    }
+
+    // merkle tree
+    function redeemMerkle(uint256 tokenId, bytes32[] calldata proof)
+    external
+    {
+        require(_verifyMerkle(_leaf(msg.sender, tokenId), proof), "Invalid merkle proof");
+        _safeMint(msg.sender, tokenId);
+    }
+
+    function _leaf(address account, uint256 tokenId)
+    internal pure returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(tokenId, account));
+    }
+
+    function _verifyMerkle(bytes32 leaf, bytes32[] memory proof)
+    internal view returns (bool)
+    {
+        return MerkleProof.verify(proof, root, leaf);
     }
 
     function publicMint() external returns (uint256) {

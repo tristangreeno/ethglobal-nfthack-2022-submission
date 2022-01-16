@@ -4,10 +4,21 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const tokens = require('../tokens.json');
+const { MerkleTree } = require('merkletreejs');
+const keccak256 = require('keccak256');
+
+function hashToken(tokenId, account) {
+  return Buffer.from(
+    ethers.utils.solidityKeccak256(['uint256', 'address'], [tokenId, account]).slice(2),
+    'hex',
+  );
+}
 
 async function main() {
   const Eggie = await hre.ethers.getContractFactory("Eggie");
-  const contract = await Eggie.deploy();
+  this.merkleTree = new MerkleTree(Object.entries(tokens).map(token => hashToken(...token)), keccak256, { sortPairs: true });
+  const contract = await Eggie.deploy(this.merkleTree.getHexRoot());
 
   await contract.deployed();
 
