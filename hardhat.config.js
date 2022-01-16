@@ -28,6 +28,10 @@ module.exports = {
     mumbai: {
       url: 'https://eth-ropsten.alchemyapi.io/v2/Vte68BURUS_kSxvL04eTfWq1SioHj0K6',
       accounts: [`262f37508850058ebdf0e52e3ea8f29e387768320a7ac6eeddcf06f953fabb49`],
+    },
+    polygon: {
+      url: 'https://polygon-mainnet.alchemyapi.io/v2/Vte68BURUS_kSxvL04eTfWq1SioHj0K6',
+      accounts: [`262f37508850058ebdf0e52e3ea8f29e387768320a7ac6eeddcf06f953fabb49`],
     }
   },
 };
