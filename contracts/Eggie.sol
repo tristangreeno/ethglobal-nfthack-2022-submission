@@ -43,7 +43,7 @@ contract Eggie is
     bytes32 public immutable root;
 
 
-    constructor(bytes32 merkleroot) ERC721("EGG", "Eggplants") {
+    constructor(bytes32 merkleroot) ERC721(_name, _symbol) {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _tokenIdCounter.increment();
