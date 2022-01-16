@@ -22,6 +22,26 @@ contract Eggie is ERC721, Ownable, AccessControl {
         _tokenIdCounter.increment();
     }
 
+    // merkle tree
+    function redeemMerkle(address account, uint256 tokenId, bytes32[] calldata proof)
+    external
+    {
+        require(_verify(_leaf(account, tokenId), proof), "Invalid merkle proof");
+        _safeMint(account, tokenId);
+    }
+
+    function _leaf(address account, uint256 tokenId)
+    internal pure returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(tokenId, account));
+    }
+
+    function _verifyMerkle(bytes32 leaf, bytes32[] memory proof)
+    internal view returns (bool)
+    {
+        return MerkleProof.verify(proof, root, leaf);
+    }
+
     function publicMint() external returns (uint256) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
