@@ -40,6 +40,7 @@ contract Eggie is
         0xff7Ca10aF37178BdD056628eF42fD7F799fAc77c;
     address private constant polygonProxyRegistryAddress =
         0x58807baD0B376efc12F5AD86aAc70E78ed67deaE;
+    bytes32 public immutable root;
 
 
     constructor(bytes32 merkleroot) ERC721("EGG", "Eggplants") {
