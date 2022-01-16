@@ -11,15 +11,18 @@ contract Eggie is ERC721, Ownable, AccessControl {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
+    bytes32 immutable public root;
+
     string constant private _collectionURI = "Qmf1nHSmhbA4PGuAaj8SSAsgefpSaZdX3P6JiK5aYQSJUm/";
     string public baseURI = "https://gateway.pinata.cloud/ipfs/";
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() ERC721("EGG", "Eggplants") {
+    constructor(bytes32 merkleroot) ERC721("EGG", "Eggplants") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _tokenIdCounter.increment();
+        root = merkleroot;
     }
 
     // merkle tree
